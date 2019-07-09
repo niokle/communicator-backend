@@ -1,6 +1,6 @@
 package com.klenio.communicatorbackend.controller;
 
-import com.klenio.communicatorbackend.dto.GroupDto;
+import com.klenio.communicatorbackend.dto.TeamDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -9,34 +9,34 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/v1")
-public class GroupController {
+public class TeamController {
 
-    @GetMapping("/groups")
-    public List<GroupDto> getGroups() {
+    @GetMapping("/teams")
+    public List<TeamDto> getTeams() {
         //todo
         return new ArrayList<>();
     }
 
-    @GetMapping("/groups/{id}")
-    public GroupDto getGroup(@PathVariable Long id) {
+    @GetMapping("/teams/{id}")
+    public TeamDto getTeam(@PathVariable Long id) {
         //todo
         return null;
     }
 
-    @PutMapping("/groups")
-    public GroupDto updateGroup(@RequestBody GroupDto groupDto) {
+    @PutMapping("/teams")
+    public TeamDto updateTeam(@RequestBody TeamDto teamDto) {
         //todo
         return null;
     }
 
-    @PostMapping("/groups")
-    public GroupDto createGroup(@RequestBody GroupDto groupDto) {
+    @PostMapping("/teams")
+    public TeamDto createTeam(@RequestBody TeamDto teamDto) {
         //todo
         return null;
     }
 
     @DeleteMapping("/groups/{id}")
-    public boolean deleteGroup(@PathVariable Long id) {
+    public boolean deleteTeam(@PathVariable Long id) {
         //todo
         return true;
     }

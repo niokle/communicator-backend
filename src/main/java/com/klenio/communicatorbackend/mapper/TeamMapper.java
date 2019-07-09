@@ -8,10 +8,10 @@ import com.klenio.communicatorbackend.dto.UserDto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupMapper {
+public class TeamMapper {
     UserMapper userMapper;
 
-    public TeamDto groupToGroupDto(Team team) {
+    public TeamDto teamToTeamDto(Team team) {
         List<UserDto> userDtos = new ArrayList<>();
         team.getUsers().stream()
                 .forEach(user -> userDtos.add(userMapper.userToUserDto(user)));
@@ -20,7 +20,7 @@ public class GroupMapper {
                 userDtos, team.isMain(), team.isActive());
     }
 
-    public Team groupDtoToGroup(TeamDto teamDto) {
+    public Team teamDtoToTeam(TeamDto teamDto) {
         List<User> users = new ArrayList<>();
         teamDto.getUserDtos().stream()
                 .forEach(userDto -> users.add(userMapper.userDtoToUser(userDto)));

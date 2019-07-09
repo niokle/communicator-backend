@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class GroupDto {
+public class TeamDto {
     private Long id;
     private Long ownerId;
     private String name;
