@@ -4,29 +4,44 @@ import com.klenio.communicatorbackend.domain.Team;
 import com.klenio.communicatorbackend.domain.User;
 import com.klenio.communicatorbackend.dto.TeamDto;
 import com.klenio.communicatorbackend.dto.UserDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
+
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class TeamMapper {
-    UserMapper userMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     public TeamDto teamToTeamDto(Team team) {
-        List<UserDto> userDtos = new ArrayList<>();
-        team.getTeamUsers().stream()
-                .forEach(user -> userDtos.add(userMapper.userToUserDto(user)));
+        List<UserDto> userDtos = Optional.ofNullable(team.getTeamUsers())
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .map(user -> userMapper.userToUserDto(user))
+                .collect(Collectors.toList());
 
         return new TeamDto(team.getId(), team.getOwnerId(), team.getName(),
                 userDtos, team.isMain(), team.isActive());
     }
 
     public Team teamDtoToTeam(TeamDto teamDto) {
-        List<User> users = new ArrayList<>();
-        teamDto.getTeamUserDtos().stream()
-                .forEach(userDto -> users.add(userMapper.userDtoToUser(userDto)));
+        List<User> users = Optional.ofNullable(teamDto.getTeamUserDtos())
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .map(userDto -> userMapper.userDtoToUser(userDto))
+                .collect(Collectors.toList());
 
         return new Team(teamDto.getId(), teamDto.getOwnerId(), teamDto.getName(),
                 users, teamDto.isMain(), teamDto.isActive());
+    }
+
+    public List<TeamDto> teamsToTeamsDtos(List<Team> teams) {
+        return teams.stream()
+                .map(team -> teamToTeamDto(team))
+                .collect(Collectors.toList());
     }
 }

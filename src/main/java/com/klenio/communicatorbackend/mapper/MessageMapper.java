@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 public class MessageMapper {
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     public MessageDto messageToMessageDto(Message message) {
         List<UserDto> deliveredTo = new ArrayList<>();
