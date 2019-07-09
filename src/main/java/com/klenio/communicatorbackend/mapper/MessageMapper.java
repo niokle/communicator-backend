@@ -4,10 +4,11 @@ import com.klenio.communicatorbackend.domain.Message;
 import com.klenio.communicatorbackend.domain.User;
 import com.klenio.communicatorbackend.dto.MessageDto;
 import com.klenio.communicatorbackend.dto.UserDto;
-
+import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class MessageMapper {
     UserMapper userMapper;
 

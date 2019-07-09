@@ -4,10 +4,11 @@ import com.klenio.communicatorbackend.domain.Team;
 import com.klenio.communicatorbackend.domain.User;
 import com.klenio.communicatorbackend.dto.TeamDto;
 import com.klenio.communicatorbackend.dto.UserDto;
-
+import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class TeamMapper {
     UserMapper userMapper;
 

@@ -2,10 +2,11 @@ package com.klenio.communicatorbackend.service;
 
 import com.klenio.communicatorbackend.domain.Team;
 import com.klenio.communicatorbackend.repository.TeamRepository;
-
+import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class TeamService {
     private TeamRepository teamRepository;
 
