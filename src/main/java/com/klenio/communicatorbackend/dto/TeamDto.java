@@ -15,7 +15,7 @@ public class TeamDto {
     private Long id;
     private Long ownerId;
     private String name;
-    private List<UserDto> userDtos;
+    private List<UserDto> teamUserDtos;
     private boolean main;
     private boolean active;
 }

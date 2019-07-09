@@ -13,7 +13,7 @@ public class TeamMapper {
 
     public TeamDto teamToTeamDto(Team team) {
         List<UserDto> userDtos = new ArrayList<>();
-        team.getUsers().stream()
+        team.getTeamUsers().stream()
                 .forEach(user -> userDtos.add(userMapper.userToUserDto(user)));
 
         return new TeamDto(team.getId(), team.getOwnerId(), team.getName(),
@@ -22,7 +22,7 @@ public class TeamMapper {
 
     public Team teamDtoToTeam(TeamDto teamDto) {
         List<User> users = new ArrayList<>();
-        teamDto.getUserDtos().stream()
+        teamDto.getTeamUserDtos().stream()
                 .forEach(userDto -> users.add(userMapper.userDtoToUser(userDto)));
 
         return new Team(teamDto.getId(), teamDto.getOwnerId(), teamDto.getName(),

@@ -20,7 +20,7 @@ public class Team {
     private Long ownerId;
     private String name;
     @ElementCollection
-    private List<User> users; //todo
+    private List<User> teamUsers;
     private boolean main;
     private boolean active;
 }
