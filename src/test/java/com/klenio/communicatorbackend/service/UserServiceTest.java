@@ -1,7 +1,6 @@
 package com.klenio.communicatorbackend.service;
 
 import com.klenio.communicatorbackend.domain.User;
-import com.klenio.communicatorbackend.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,9 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Optional;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,8 +20,10 @@ public class UserServiceTest {
     @Test
     public void getAllUsers() {
         //given
-        User user1 = new User(1L, "user1", "user1@", "12345", "Warszawa", "Polish", "on-line", true);
-        User user2 = new User(2L, "user2", "user2@", "12345", "Warszawa", "Polish", "on-line", true);
+        User user1 = new User(1L, "user1", "user1@", "12345", "Warszawa",
+                "Polish", "on-line", true, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user2 = new User(2L, "user2", "user2@", "12345", "Warszawa",
+                "Polish", "on-line", true, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Long userId1 = userService.saveUser(user1).getId();
         Long userId2 = userService.saveUser(user2).getId();
 
@@ -41,7 +41,8 @@ public class UserServiceTest {
     @Test
     public void getUser() {
         //given
-        User user1 = new User(1L, "user1", "user1@", "12345", "Warszawa", "Polish", "on-line", true);
+        User user1 = new User(1L, "user1", "user1@", "12345", "Warszawa",
+                "Polish", "on-line", true, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Long userId1 = userService.saveUser(user1).getId();
 
         //when
@@ -57,7 +58,8 @@ public class UserServiceTest {
     @Test
     public void saveUser() {
         //given
-        User user1 = new User(1L, "user1", "user1@", "12345", "Warszawa", "Polish", "on-line", true);
+        User user1 = new User(1L, "user1", "user1@", "12345", "Warszawa",
+                "Polish", "on-line", true, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Long userId1 = userService.saveUser(user1).getId();
 
         //when
@@ -73,7 +75,8 @@ public class UserServiceTest {
     @Test
     public void deleteUser() {
         //given
-        User user1 = new User(1L, "user1", "user1@", "12345", "Warszawa", "Polish", "on-line", true);
+        User user1 = new User(1L, "user1", "user1@", "12345", "Warszawa",
+                "Polish", "on-line", true, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Long userId1 = userService.saveUser(user1).getId();
 
         //when

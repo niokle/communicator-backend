@@ -12,21 +12,26 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TeamServiceTest {
     @Autowired
     private TeamService teamService;
 
+    @Autowired
+    private UserService userService;
+
     @Test
     public void getAllTeams() {
         //given
-        Team team1 = new Team(1L, 1L, "team1", new ArrayList(), true, true);
-        Team team2 = new Team(2L, 2L, "team2", new ArrayList(), true, true);
-        Long teamId1 = teamService.saveTeam(team1).getId();
-        Long teamId2 = teamService.saveTeam(team2).getId();
+        User owner = userService.saveUser(new User(1L, "user1", "user1@", "12345",
+                "Warszawa", "Polish", "on-line", true, new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>()));
+        Long ownerId = owner.getId();
+        Team team1 = teamService.saveTeam(new Team(1L, owner, "team1", new ArrayList<>(), true,
+                true, new ArrayList<>()));
+        Team team2 = teamService.saveTeam(new Team(2L, owner, "team2", new ArrayList<>(), true,
+                true, new ArrayList<>()));
 
         //when
         int records = teamService.getAllTeams().size();
@@ -35,15 +40,19 @@ public class TeamServiceTest {
         Assert.assertTrue(records > 1);
 
         //clean up
-        teamService.deleteTeam(teamId1);
-        teamService.deleteTeam(teamId2);
+        userService.deleteUser(ownerId);
     }
 
     @Test
     public void getTeam() {
         //given
-        Team team1 = new Team(1L, 1L, "team1", new ArrayList(), true, true);
-        Long teamId1 = teamService.saveTeam(team1).getId();
+        User owner = userService.saveUser(new User(1L, "user1", "user1@", "12345",
+                "Warszawa", "Polish", "on-line", true, new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>()));
+        Long ownerId = owner.getId();
+        Team team1 = teamService.saveTeam(new Team(1L, owner, "team1", new ArrayList<>(), true,
+                true, new ArrayList<>()));
+        Long teamId1 = team1.getId();
 
         //when
         Optional<Team> teamResult = teamService.getTeam(teamId1);
@@ -52,14 +61,19 @@ public class TeamServiceTest {
         Assert.assertEquals("team1", teamResult.get().getName());
 
         //clean up
-        teamService.deleteTeam(teamId1);
+        userService.deleteUser(ownerId);
     }
 
     @Test
     public void saveTeam() {
         //given
-        Team team1 = new Team(1L, 1L, "team1", new ArrayList(), true, true);
-        Long teamId1 = teamService.saveTeam(team1).getId();
+        User owner = userService.saveUser(new User(1L, "user1", "user1@", "12345",
+                "Warszawa", "Polish", "on-line", true, new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>()));
+        Long ownerId = owner.getId();
+        Team team1 = teamService.saveTeam(new Team(1L, owner, "team1", new ArrayList<>(), true,
+                true, new ArrayList<>()));
+        Long teamId1 = team1.getId();
 
         //when
         Optional<Team> teamResult = teamService.getTeam(teamId1);
@@ -68,14 +82,19 @@ public class TeamServiceTest {
         Assert.assertEquals("team1", teamResult.get().getName());
 
         //clean up
-        teamService.deleteTeam(teamId1);
+        userService.deleteUser(ownerId);
     }
 
     @Test
     public void deleteTeam() {
         //given
-        Team team1 = new Team(1L, 1L, "team1", new ArrayList(), true, true);
-        Long teamId1 = teamService.saveTeam(team1).getId();
+        User owner = userService.saveUser(new User(1L, "user1", "user1@", "12345",
+                "Warszawa", "Polish", "on-line", true, new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>()));
+        Long ownerId = owner.getId();
+        Team team1 = teamService.saveTeam(new Team(1L, owner, "team1", new ArrayList<>(), true,
+                true, new ArrayList<>()));
+        Long teamId1 = team1.getId();
 
         //when
         teamService.deleteTeam(teamId1);
@@ -84,5 +103,6 @@ public class TeamServiceTest {
         Assert.assertFalse(teamService.getTeam(teamId1).equals(true));
 
         //clean up
+        userService.deleteUser(ownerId);
     }
 }

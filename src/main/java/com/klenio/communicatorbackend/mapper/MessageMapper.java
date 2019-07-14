@@ -64,4 +64,10 @@ public class MessageMapper {
                 userMapper.userDtoToUser(messageDto.getReceiverUserDto()), teamMapper.teamDtoToTeam(messageDto.getReceiverTeamDto()),
                 messageDto.getMessage(), deliveredTo, readedBy, messageDto.isReadConfirmationSent(), readConfirmedBy);
     }
+
+    public List<MessageDto> messagesToMessagesDtos(List<Message> messages) {
+        return messages.stream()
+                .map(message -> messageToMessageDto(message))
+                .collect(Collectors.toList());
+    }
 }
