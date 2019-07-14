@@ -19,9 +19,9 @@ import java.util.List;
 public class MessageDto {
     private Long id;
     private LocalDateTime timeStamp;
-    private Long senderUserId;
-    private Long receiverUserId;
-    private Long receiverTeamId;
+    private UserDto senderUserDto;
+    private UserDto receiverUserDto;
+    private TeamDto receiverTeamDto;
     private String message;
     private List<UserDto> deliveredTo; //todo
     private List<UserDto> readedBy; //todo

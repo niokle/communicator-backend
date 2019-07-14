@@ -4,51 +4,64 @@ import com.klenio.communicatorbackend.domain.Message;
 import com.klenio.communicatorbackend.domain.User;
 import com.klenio.communicatorbackend.dto.MessageDto;
 import com.klenio.communicatorbackend.dto.UserDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
+
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class MessageMapper {
+    @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private TeamMapper teamMapper;
+
     public MessageDto messageToMessageDto(Message message) {
-        List<UserDto> deliveredTo = new ArrayList<>();
-        List<UserDto> readedBy = new ArrayList<>();
-        List<UserDto> readConfirmedBy = new ArrayList<>();
+        List<UserDto> deliveredTo = Optional.ofNullable(message.getDeliveredTo())
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .map(user -> userMapper.userToUserDto(user))
+                .collect(Collectors.toList());
+        List<UserDto> readedBy = Optional.ofNullable(message.getReadedBy())
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .map(user -> userMapper.userToUserDto(user))
+                .collect(Collectors.toList());
+        List<UserDto> readConfirmedBy = Optional.ofNullable(message.getReadConfirmedBy())
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .map(user -> userMapper.userToUserDto(user))
+                .collect(Collectors.toList());
 
-        message.getDeliveredTo().stream()
-                .forEach(user -> deliveredTo.add(userMapper.userToUserDto(user)));
-
-        message.getReadedBy().stream()
-                .forEach(user -> readedBy.add(userMapper.userToUserDto(user)));
-
-        message.getReadConfirmedBy().stream()
-                .forEach(user -> readConfirmedBy.add(userMapper.userToUserDto(user)));
-
-        return new MessageDto(message.getId(), message.getTimeStamp(), message.getSenderUserId(),
-                message.getReceiverUserId(), message.getReceiverTeamId(), message.getMessage(),
-                deliveredTo, readedBy, message.isReadConfirmationSent(),
+        return new MessageDto(message.getId(), message.getTimeStamp(), userMapper.userToUserDto(message.getSenderUser()),
+                userMapper.userToUserDto(message.getReceiverUser()), teamMapper.teamToTeamDto(message.getReceiverTeam()),
+                message.getMessage(), deliveredTo, readedBy, message.isReadConfirmationSent(),
                 readConfirmedBy);
     }
 
     public Message messageDtoToMessage(MessageDto messageDto) {
-        List<User> deliveredTo = new ArrayList<>();
-        List<User> readedBy = new ArrayList<>();
-        List<User> readConfirmedBy = new ArrayList<>();
+        List<User> deliveredTo = Optional.ofNullable(messageDto.getDeliveredTo())
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .map(userDto -> userMapper.userDtoToUser(userDto))
+                .collect(Collectors.toList());
+        List<User> readedBy = Optional.ofNullable(messageDto.getReadedBy())
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .map(userDto -> userMapper.userDtoToUser(userDto))
+                .collect(Collectors.toList());
+        List<User> readConfirmedBy = Optional.ofNullable(messageDto.getReadConfirmedBy())
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .map(userDto -> userMapper.userDtoToUser(userDto))
+                .collect(Collectors.toList());
 
-        messageDto.getDeliveredTo().stream()
-                .forEach(userDto -> deliveredTo.add(userMapper.userDtoToUser(userDto)));
-
-        messageDto.getReadedBy().stream()
-                .forEach(userDto -> readedBy.add(userMapper.userDtoToUser(userDto)));
-
-        messageDto.getReadConfirmedBy().stream()
-                .forEach(userDto -> readConfirmedBy.add(userMapper.userDtoToUser(userDto)));
-
-        return new Message(messageDto.getId(), messageDto.getTimeStamp(), messageDto.getSenderUserId(),
-                messageDto.getReceiverUserId(), messageDto.getReceiverTeamId(), messageDto.getMessage(),
-                deliveredTo, readedBy, messageDto.isReadConfirmationSent(),
-                readConfirmedBy);
+        return new Message(messageDto.getId(), messageDto.getTimeStamp(), userMapper.userDtoToUser(messageDto.getSenderUserDto()),
+                userMapper.userDtoToUser(messageDto.getReceiverUserDto()), teamMapper.teamDtoToTeam(messageDto.getReceiverTeamDto()),
+                messageDto.getMessage(), deliveredTo, readedBy, messageDto.isReadConfirmationSent(), readConfirmedBy);
     }
 }

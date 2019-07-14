@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,4 +25,10 @@ public class User {
     private String language;
     private String status;
     private boolean active;
+    @OneToMany(targetEntity = Team.class, mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Team> teams = new ArrayList<>();
+    @OneToMany(targetEntity = Message.class, mappedBy = "senderUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Message> messagesSender = new ArrayList<>();
+    @ManyToMany(targetEntity = Message.class, mappedBy = "receiverUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Message> messagesReceiver = new ArrayList<>();
 }
