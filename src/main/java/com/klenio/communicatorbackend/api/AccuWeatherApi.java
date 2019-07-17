@@ -6,6 +6,7 @@ import kong.unirest.Unirest;
 import org.json.JSONObject;
 
 public class AccuWeatherApi {
+    //todo
     private static String apiKey = "";
     private static String citySearch = "http://dataservice.accuweather.com/locations/v1/cities/search"; //?apikey=&q=
     private static String currentConditions = "http://dataservice.accuweather.com/currentconditions/v1/"; //{loc}?apikey=

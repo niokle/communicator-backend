@@ -17,18 +17,15 @@ public class UserMapper {
     private MessageMapper messageMapper;
 
     public UserDto userToUserDto(User user) {
-        return new UserDto(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getLocation(),
-                user.getLanguage(), user.getStatus(), user.isActive(), teamMapper.teamsToTeamsDtos(user.getTeams()),
-                messageMapper.messagesToMessagesDtos(user.getMessagesSender()),
-                messageMapper.messagesToMessagesDtos(user.getMessagesReceiver()));
+        return new UserDto(user.getId(), user.getName(), user.getEmail(), null, user.getLocation(),
+                user.getLanguage(), user.getStatus(), user.isActive(), null, null,
+                null);
     }
 
     public User userDtoToUser(UserDto userDto) {
-        return new User(userDto.getId(), userDto.getName(), userDto.getEmail(), userDto.getPassword(),
+        return new User(userDto.getId(), userDto.getName(), userDto.getEmail(), null,
                 userDto.getLocation(), userDto.getLanguage(), userDto.getStatus(), userDto.isActive(),
-                teamMapper.teamsDtosToTeams(userDto.getTeamsDtos()),
-                messageMapper.messagesDtosToMessages(userDto.getMessagesDtosSender()),
-                messageMapper.messagesDtosToMessages(userDto.getMessagesDtosReceiver()));
+                null, null, null);
     }
 
     public List<UserDto> usersToUsersDtos(List<User> users) {
