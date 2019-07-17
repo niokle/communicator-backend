@@ -23,4 +23,7 @@ dependencies {
 	runtimeOnly 'mysql:mysql-connector-java'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	//testImplementation 'org.springframework.security:spring-security-test'
+	compile 'com.google.cloud:google-cloud-translate:1.82.0'
+	implementation 'com.konghq:unirest-java:2.3.09'
+	compile 'org.json:json'
 }
