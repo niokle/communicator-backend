@@ -15,35 +15,34 @@ public class AccuWeatherApi {
     @Autowired
     private Confirguration confirguration;
 
-    private static String citySearch = "http://dataservice.accuweather.com/locations/v1/cities/search";
-    private static String currentConditions = "http://dataservice.accuweather.com/currentconditions/v1/";
+    private static final String CITY_SEARCH = "http://dataservice.accuweather.com/locations/v1/cities/search";
+    private static final String CURRENT_CONDITIONS = "http://dataservice.accuweather.com/currentconditions/v1/";
 
     public String getKeyLocation(String cityName) {
-        String req = citySearch + "?apikey=" + confirguration.getAccuweatherApiKey() + "&q=" + cityName;
+        String req = CITY_SEARCH + "?apikey=" + confirguration.getAccuweatherApiKey() + "&q=" + cityName;
         HttpResponse<JsonNode> jsonResponse = Unirest.get(req)
                 .asJson();
 
-        //JSONObject jsonObject = jsonResponse.getBody().getObject();
-
-        //while (jsonResponse.getBody().getObject().keys().hasNext()) {
-        System.out.println(jsonResponse.getBody().toString());
-        //}
+        //todo rzeczywista implementacja
 
         return "274663";
     }
 
     public WeatherDto getWeather(String keyLocation) {
-        String req = currentConditions + getKeyLocation("test") + "?apikey=" + confirguration.getAccuweatherApiKey();
+        String req = CURRENT_CONDITIONS + keyLocation + "?apikey=" + confirguration.getAccuweatherApiKey();
         HttpResponse<JsonNode> jsonResponse = Unirest.get(req)
                 .asJson();
 
         JSONArray jsonArray = jsonResponse.getBody().getArray();
         JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-        Double temperatureMetricValue = jsonObject.getJSONObject("Temperature").getJSONObject("Metric").getDouble("Value");
-        String temperatureMetricUnit = jsonObject.getJSONObject("Temperature").getJSONObject("Metric").getString("Unit");
-        Integer weatherIcon = jsonObject.getInt("WeatherIcon");
-
-        return new WeatherDto(temperatureMetricValue, temperatureMetricUnit, weatherIcon);
+        try {
+            Double temperatureMetricValue = jsonObject.getJSONObject("Temperature").getJSONObject("Metric").getDouble("Value");
+            String temperatureMetricUnit = jsonObject.getJSONObject("Temperature").getJSONObject("Metric").getString("Unit");
+            Integer weatherIcon = jsonObject.getInt("WeatherIcon");
+            return new WeatherDto(temperatureMetricValue, temperatureMetricUnit, weatherIcon);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

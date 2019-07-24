@@ -27,4 +27,17 @@ public class AzureTranslateApiTest {
         Assert.assertEquals("Cześć jak się masz?", translateDto.getTextOutput());
         Assert.assertEquals("en", translateDto.getTextInputLanguage());
     }
+
+    @Test
+    public void getTranslationNullInput() {
+        //given
+        String textInput = null;
+        String textOutputLanguage = "pl";
+
+        //when
+        TranslateDto translateDto = azureTranslateApi.getTranslation(textInput, textOutputLanguage);
+
+        //then
+        Assert.assertNull(translateDto);
+    }
 }
