@@ -12,4 +12,16 @@ public class Confirguration {
 
     @Value("${azure.api.key}")
     private String azureApiKey;
+
+    @Value("${accuweather.api.city.search}")
+    private String accuweatherApiCitySearch;
+
+    @Value("${accuweather.api.current.conditions}")
+    private String accuweatherApiCurrentConditions;
+
+    @Value("${azure.api.url}")
+    private String azureApiUrl;
+
+    @Value("${azure.api.version}")
+    private String azureApiVersion;
 }

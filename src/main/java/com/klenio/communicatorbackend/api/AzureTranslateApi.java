@@ -15,9 +15,6 @@ public class AzureTranslateApi {
     @Autowired
     Confirguration confirguration;
 
-    private static final String URL = "https://api.cognitive.microsofttranslator.com/translate?";
-    private static final String API_VERSION = "api-version=3.0";
-
     public TranslateDto getTranslation(String textInput, String textOutputLanguage) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("Text", textInput);
@@ -25,7 +22,7 @@ public class AzureTranslateApi {
         JSONArray jsonArray = new JSONArray();
         jsonArray.put(jsonObject);
 
-        String req = URL + API_VERSION + "&to=" + textOutputLanguage;
+        String req = confirguration.getAzureApiUrl() + confirguration.getAzureApiVersion() + "&to=" + textOutputLanguage;
         HttpResponse<JsonNode> jsonResponse = Unirest.post(req)
                 .header("Ocp-Apim-Subscription-Key", confirguration.getAzureApiKey())
                 .header("Content-Type", "application/json")
