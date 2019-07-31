@@ -22,4 +22,11 @@ public class MessageDto {
     private List<UserDto> readedBy; //todo
     private boolean readConfirmationSent;
     private List<UserDto> readConfirmedBy; //todo
+
+    public boolean isNotRead() {
+        if (readedBy.size() == 0) {
+            return true;
+        }
+        return false;
+    }
 }

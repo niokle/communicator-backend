@@ -30,8 +30,10 @@ public class MessageController {
 
     @PutMapping("/messages")
     public MessageDto updateMessage(@RequestBody MessageDto messageDto) {
-        //todo tylko jak nie przeczytana przez zadnego z odbiorcow
-        return messageMapper.messageToMessageDto(messageService.saveMessage(messageMapper.messageDtoToMessage(messageDto)));
+        if (messageDto.isNotRead()) {
+            return messageMapper.messageToMessageDto(messageService.saveMessage(messageMapper.messageDtoToMessage(messageDto)));
+        }
+        return messageDto;
     }
 
     @PostMapping("/messages")
@@ -40,8 +42,10 @@ public class MessageController {
     }
 
     @DeleteMapping("/messages/{id}")
-    public void deleteMessage(@PathVariable Long id) {
-        //todo tylko jak nie przeczytana przez zadnego z odbiorcow
-        messageService.deleteMessage(id);
+    public void deleteMessage(@PathVariable Long id) throws MessageNotFoundException {
+        if (messageMapper.messageToMessageDto(messageService.getMessage(id).orElseThrow(MessageNotFoundException::new))
+                .isNotRead()) {
+            messageService.deleteMessage(id);
+        }
     }
 }
