@@ -2,6 +2,7 @@ package com.klenio.communicatorbackend.controller;
 
 import com.klenio.communicatorbackend.dto.MessageDto;
 import com.klenio.communicatorbackend.exception.MessageNotFoundException;
+import com.klenio.communicatorbackend.exception.MessageReadException;
 import com.klenio.communicatorbackend.mapper.MessageMapper;
 import com.klenio.communicatorbackend.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,11 @@ public class MessageController {
     }
 
     @PutMapping("/messages")
-    public MessageDto updateMessage(@RequestBody MessageDto messageDto) {
-        if (messageDto.isNotRead()) {
-            return messageMapper.messageToMessageDto(messageService.saveMessage(messageMapper.messageDtoToMessage(messageDto)));
+    public MessageDto updateMessage(@RequestBody MessageDto messageDto) throws MessageReadException{
+        if (messageService.isRead(messageDto.getId())) {
+            throw new MessageReadException("can't update read message");
         }
-        return messageDto;
+        return messageMapper.messageToMessageDto(messageService.saveMessage(messageMapper.messageDtoToMessage(messageDto)));
     }
 
     @PostMapping("/messages")
@@ -42,10 +43,10 @@ public class MessageController {
     }
 
     @DeleteMapping("/messages/{id}")
-    public void deleteMessage(@PathVariable Long id) throws MessageNotFoundException {
-        if (messageMapper.messageToMessageDto(messageService.getMessage(id).orElseThrow(MessageNotFoundException::new))
-                .isNotRead()) {
-            messageService.deleteMessage(id);
+    public void deleteMessage(@PathVariable Long id) throws MessageReadException {
+        if (messageService.isRead(id)) {
+            throw new MessageReadException("can't delete read message");
         }
+        messageService.deleteMessage(id);
     }
 }

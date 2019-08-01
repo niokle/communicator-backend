@@ -27,4 +27,11 @@ public class MessageService {
     public void deleteMessage(Long id) {
         messageRepository.deleteById(id);
     }
+
+    public boolean isRead(Long id) {
+        if (messageRepository.findById(id).get().getReadedBy().size() == 0) {
+            return false;
+        }
+        return true;
+    }
 }
